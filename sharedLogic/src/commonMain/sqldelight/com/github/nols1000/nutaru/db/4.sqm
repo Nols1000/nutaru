@@ -1,0 +1,9 @@
+-- Migration v4 -> v5: settings singleton (mnemonic acknowledgment flag).
+-- Onboarding's recovery reveal step sets mnemonic_acknowledged = 1 once the
+-- user confirms they've saved the 12 words. Relaunch routing reads this to
+-- decide between the forced reveal screen and Home. Other settings columns
+-- (theme, units, agent_enabled) land with issue-14.
+CREATE TABLE settings (
+    id INTEGER PRIMARY KEY,
+    mnemonic_acknowledged INTEGER NOT NULL DEFAULT 0
+);

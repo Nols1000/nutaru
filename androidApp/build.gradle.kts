@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.sharedUI)
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.biometric)
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)

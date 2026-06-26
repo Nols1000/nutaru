@@ -1,0 +1,12 @@
+CREATE TABLE settings (
+    id INTEGER PRIMARY KEY,
+    mnemonic_acknowledged INTEGER NOT NULL DEFAULT 0
+);
+
+-- Singleton: only id = 1 is ever read or written by the app.
+selectMnemonicAcknowledged:
+SELECT mnemonic_acknowledged FROM settings WHERE id = 1;
+
+upsertMnemonicAcknowledged:
+INSERT INTO settings (id, mnemonic_acknowledged) VALUES (1, ?)
+ON CONFLICT(id) DO UPDATE SET mnemonic_acknowledged = excluded.mnemonic_acknowledged;
