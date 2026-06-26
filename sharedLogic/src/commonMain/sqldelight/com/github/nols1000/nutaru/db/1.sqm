@@ -1,0 +1,3 @@
+-- Migration v1 -> v2: trivial proof that the migrations framework is wired.
+-- v1 schema created `profile` without display_name; v2 adds the column.
+ALTER TABLE profile ADD COLUMN display_name TEXT;

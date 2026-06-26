@@ -1,0 +1,30 @@
+CREATE TABLE profile (
+    id INTEGER PRIMARY KEY,
+    age INTEGER NOT NULL,
+    sex TEXT NOT NULL,
+    height_cm INTEGER NOT NULL,
+    goal TEXT NOT NULL,
+    activity_level TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    display_name TEXT
+);
+
+-- Singleton: only id = 1 is ever read or written by the app.
+selectProfile:
+SELECT * FROM profile WHERE id = 1;
+
+upsertProfile:
+INSERT INTO profile (id, age, sex, height_cm, goal, activity_level, created_at, updated_at, display_name)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(id) DO UPDATE SET
+    age = excluded.age,
+    sex = excluded.sex,
+    height_cm = excluded.height_cm,
+    goal = excluded.goal,
+    activity_level = excluded.activity_level,
+    updated_at = excluded.updated_at,
+    display_name = excluded.display_name;
+
+deleteProfile:
+DELETE FROM profile WHERE id = 1;
