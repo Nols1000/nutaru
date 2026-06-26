@@ -31,3 +31,6 @@ dependencyResolutionManagement {
 include(":androidApp")
 include(":sharedLogic")
 include(":sharedUI")
+include(":pack-compiler")
+
+project(":pack-compiler").projectDir = file("tools/pack-compiler")

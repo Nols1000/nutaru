@@ -28,3 +28,9 @@ Offline Kotlin CLI tool that takes Open Food Facts bulk export as input and prod
 ## Blocked by
 
 None — can start immediately. Parallel with #1.
+
+## Notes
+
+- CI publishing is wired in `.github/workflows/packs-publish.yml` (workflow_dispatch): downloads the OFF JSONL dump, runs `compile` per region, uploads `.pack` files to a GitHub Release (`packs-v1`, stable URLs), and deploys `catalog.json` to GitHub Pages via `actions/deploy-pages`. Prereq: repo Settings -> Pages -> Source = "GitHub Actions" (one-time human step).
+- The workflow ships **5** regional packs (US, EU-MIX, UK, JP, BR). The 6th pack (`GLOBAL`) is split into `docs/issue-21-global-pack-filter.md` because `OffReader.REGION_TAGS["GLOBAL"] == null` keeps every product on real data and would OOM; the demo path hid this. The "6 starter packs built and uploaded" acceptance criterion is blocked on issue-21.
+- Custom domain `nutaru.app` (DNS + Pages setting) remains a human TODO; until wired the manifest is at `<owner>.github.io/<repo>/catalog.json`. Pack download URLs point at the Release, so they are independent of the Pages domain.

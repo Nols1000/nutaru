@@ -1,0 +1,78 @@
+{
+  "schema": "nutaru.catalog/v1",
+  "updated": "2026-06-26T07:10:13.446710Z",
+  "packs": [
+    {
+      "id": "us",
+      "name": "US starter pack",
+      "version": "1.0.0",
+      "region": "US",
+      "item_count": 4,
+      "byte_size": 952,
+      "sha256": "073647b893477eaea918150f8d736425f2bef6b3033a3768e99fb506270bc641",
+      "url": "https://github.com/nutaru/nutaru/releases/download/packs-v1/us.pack",
+      "license": "ODbL 1.0",
+      "attribution": "Open Food Facts — https://world.openfoodfacts.org"
+    },
+    {
+      "id": "eu-mix",
+      "name": "EU-mix starter pack (DE/FR/ES/IT)",
+      "version": "1.0.0",
+      "region": "EU-MIX",
+      "item_count": 4,
+      "byte_size": 881,
+      "sha256": "44c6df82c578650c1cc18d831e4bfa41c8404d623329a26d3c3f225935cb4d11",
+      "url": "https://github.com/nutaru/nutaru/releases/download/packs-v1/eu-mix.pack",
+      "license": "ODbL 1.0",
+      "attribution": "Open Food Facts — https://world.openfoodfacts.org"
+    },
+    {
+      "id": "uk",
+      "name": "UK starter pack",
+      "version": "1.0.0",
+      "region": "UK",
+      "item_count": 3,
+      "byte_size": 659,
+      "sha256": "c7ec457a267c2af1b322cacbb6d67a0f4252e49320708be760871c11b46df649",
+      "url": "https://github.com/nutaru/nutaru/releases/download/packs-v1/uk.pack",
+      "license": "ODbL 1.0",
+      "attribution": "Open Food Facts — https://world.openfoodfacts.org"
+    },
+    {
+      "id": "jp",
+      "name": "JP starter pack",
+      "version": "1.0.0",
+      "region": "JP",
+      "item_count": 3,
+      "byte_size": 639,
+      "sha256": "e5b8fed25d8d14f774205329ae5c891229c442160f3dd285a2c2876ed6da8510",
+      "url": "https://github.com/nutaru/nutaru/releases/download/packs-v1/jp.pack",
+      "license": "ODbL 1.0",
+      "attribution": "Open Food Facts — https://world.openfoodfacts.org"
+    },
+    {
+      "id": "br",
+      "name": "BR starter pack",
+      "version": "1.0.0",
+      "region": "BR",
+      "item_count": 3,
+      "byte_size": 665,
+      "sha256": "605e08221919400cacaa50ca8fb86820d6af414e699ff9bf1493f2a3b59a811d",
+      "url": "https://github.com/nutaru/nutaru/releases/download/packs-v1/br.pack",
+      "license": "ODbL 1.0",
+      "attribution": "Open Food Facts — https://world.openfoodfacts.org"
+    },
+    {
+      "id": "global",
+      "name": "Global brands starter pack",
+      "version": "1.0.0",
+      "region": "GLOBAL",
+      "item_count": 3,
+      "byte_size": 646,
+      "sha256": "609bffddcd6bbabf2c24899fb12201ea08bdc59cb3c6b29218bd75ab2cd8a29c",
+      "url": "https://github.com/nutaru/nutaru/releases/download/packs-v1/global.pack",
+      "license": "ODbL 1.0",
+      "attribution": "Open Food Facts — https://world.openfoodfacts.org"
+    }
+  ]
+}
