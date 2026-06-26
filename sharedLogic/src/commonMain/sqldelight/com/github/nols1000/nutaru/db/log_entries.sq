@@ -1,0 +1,62 @@
+CREATE TABLE log_entries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL,
+    quantity REAL NOT NULL,
+    unit TEXT NOT NULL,
+    quantity_grams REAL NOT NULL,
+    meal_type TEXT NOT NULL,
+    source TEXT NOT NULL,
+    timestamp INTEGER NOT NULL,
+    notes TEXT,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+insertLogEntry:
+INSERT INTO log_entries (product_id, quantity, unit, quantity_grams, meal_type, source, timestamp, notes)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectLogEntriesForDay:
+SELECT * FROM log_entries WHERE timestamp >= :dayStartMillis AND timestamp < :dayEndMillis ORDER BY timestamp ASC;
+
+selectAllLogEntries:
+SELECT * FROM log_entries ORDER BY timestamp ASC;
+
+-- Day's entries joined with the product's name + per-100g macros so the diary
+-- has everything it needs to group by meal, render rows, and compute macros in
+-- one round-trip (no second products lookup).
+selectLogEntriesForDayWithProduct:
+SELECT
+    le.id AS id,
+    le.product_id AS product_id,
+    p.name AS product_name,
+    le.quantity AS quantity,
+    le.unit AS unit,
+    le.quantity_grams AS quantity_grams,
+    le.meal_type AS meal_type,
+    le.source AS source,
+    le.timestamp AS timestamp,
+    le.notes AS notes,
+    p.kcal_per_100g AS kcal_per_100g,
+    p.protein_g_per_100g AS protein_g_per_100g,
+    p.carbs_g_per_100g AS carbs_g_per_100g,
+    p.fat_g_per_100g AS fat_g_per_100g
+FROM log_entries le
+JOIN products p ON p.id = le.product_id
+WHERE le.timestamp >= :dayStartMillis AND le.timestamp < :dayEndMillis
+ORDER BY le.timestamp ASC;
+
+updateLogEntry:
+UPDATE log_entries
+SET product_id = :product_id,
+    quantity = :quantity,
+    unit = :unit,
+    quantity_grams = :quantity_grams,
+    meal_type = :meal_type,
+    timestamp = :timestamp
+WHERE id = :id;
+
+deleteLogEntry:
+DELETE FROM log_entries WHERE id = ?;
+
+deleteAllLogEntries:
+DELETE FROM log_entries;
