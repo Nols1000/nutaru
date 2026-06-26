@@ -1,0 +1,55 @@
+-- Migration v5 -> v6: pack import runtime (issue-07).
+--
+-- products.pack_id changes INTEGER -> TEXT so it can reference the catalog pack
+-- id directly (e.g. "us"). Existing seed rows carry NULL pack_id, so the
+-- table-copy preserves them as-is. SQLite can't ALTER a column type, so the
+-- standard create-copy-drop-rename dance is used; PRAGMA foreign_keys is off in
+-- both the SQLCipher and JDBC drivers, so dropping the parent products table
+-- mid-migration is safe, and the recreated table keeps the same id values that
+-- log_entries references.
+CREATE TABLE products_v6 (
+    id INTEGER PRIMARY KEY,
+    barcode TEXT,
+    name TEXT NOT NULL,
+    brand TEXT,
+    kcal_per_100g REAL NOT NULL,
+    protein_g_per_100g REAL NOT NULL,
+    carbs_g_per_100g REAL NOT NULL,
+    fat_g_per_100g REAL NOT NULL,
+    source_id INTEGER,
+    pack_id TEXT
+);
+INSERT INTO products_v6 (id, barcode, name, brand, kcal_per_100g, protein_g_per_100g, carbs_g_per_100g, fat_g_per_100g, source_id, pack_id)
+SELECT id, barcode, name, brand, kcal_per_100g, protein_g_per_100g, carbs_g_per_100g, fat_g_per_100g, source_id, pack_id FROM products;
+DROP TABLE products;
+ALTER TABLE products_v6 RENAME TO products;
+
+-- sources: license/attribution provenance for pack-derived products. One row
+--   per source_id; the OFF source is id 1 (matches PackFormat.SOURCE_ID_OFF).
+CREATE TABLE sources (
+    id INTEGER PRIMARY KEY,
+    license TEXT,
+    attribution TEXT,
+    url TEXT
+);
+
+-- packs: installed pack metadata. `id` is the catalog pack id (e.g. "us");
+-- re-importing a new version upserts the same row. `products.pack_id`
+-- references this id, so uninstall is `DELETE FROM products WHERE pack_id = ?`.
+CREATE TABLE packs (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    version TEXT NOT NULL,
+    region TEXT,
+    source_url TEXT,
+    imported_at INTEGER NOT NULL,
+    item_count INTEGER NOT NULL,
+    byte_size INTEGER NOT NULL,
+    sha256 TEXT,
+    license TEXT,
+    attribution TEXT
+);
+
+-- products_fts: FTS5 index over product name + brand. Standalone (not external
+-- content) so DELETE-by-rowid works directly; the rowid is the products.id.
+CREATE VIRTUAL TABLE products_fts USING fts5(name, brand);

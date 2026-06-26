@@ -1,0 +1,38 @@
+CREATE TABLE packs (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    version TEXT NOT NULL,
+    region TEXT,
+    source_url TEXT,
+    imported_at INTEGER NOT NULL,
+    item_count INTEGER NOT NULL,
+    byte_size INTEGER NOT NULL,
+    sha256 TEXT,
+    license TEXT,
+    attribution TEXT
+);
+
+-- Upsert: re-importing a pack (update to a new version) replaces the row.
+upsertPack:
+INSERT INTO packs (id, name, version, region, source_url, imported_at, item_count, byte_size, sha256, license, attribution)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(id) DO UPDATE SET
+    name = excluded.name,
+    version = excluded.version,
+    region = excluded.region,
+    source_url = excluded.source_url,
+    imported_at = excluded.imported_at,
+    item_count = excluded.item_count,
+    byte_size = excluded.byte_size,
+    sha256 = excluded.sha256,
+    license = excluded.license,
+    attribution = excluded.attribution;
+
+selectAllPacks:
+SELECT * FROM packs ORDER BY name ASC;
+
+selectPackById:
+SELECT * FROM packs WHERE id = ?;
+
+deletePack:
+DELETE FROM packs WHERE id = ?;

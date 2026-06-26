@@ -1,0 +1,26 @@
+CREATE TABLE sources (
+    id INTEGER PRIMARY KEY,
+    license TEXT,
+    attribution TEXT,
+    url TEXT
+);
+
+-- Idempotent upsert keyed on the source id (OFF source = 1). Re-importing a
+-- pack refreshes license/attribution without duplicating the row.
+upsertSource:
+INSERT INTO sources (id, license, attribution, url) VALUES (?, ?, ?, ?)
+ON CONFLICT(id) DO UPDATE SET
+    license = excluded.license,
+    attribution = excluded.attribution,
+    url = excluded.url;
+
+selectSource:
+SELECT * FROM sources WHERE id = ?;
+
+-- A source is unreferenced when no products carry its source_id. Used by the
+-- uninstall path to reclaim the source row only if no other pack needs it.
+countProductsBySource:
+SELECT COUNT(*) FROM products WHERE source_id = ?;
+
+deleteSource:
+DELETE FROM sources WHERE id = ?;

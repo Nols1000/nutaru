@@ -1,0 +1,24 @@
+-- Standalone FTS5 index over product name + brand. rowid = products.id, so the
+-- index is populated alongside each product insert and pruned on uninstall by
+-- matching the pack's product ids. Standalone (not external content) keeps
+-- DELETE-by-rowid trivial at the cost of duplicating the indexed text.
+CREATE VIRTUAL TABLE products_fts USING fts5(name, brand);
+
+insertProductFts:
+INSERT INTO products_fts (rowid, name, brand) VALUES (?, ?, ?);
+
+-- Bulk prune: removes FTS rows for every product belonging to [packId].
+deleteProductFtsByPack:
+DELETE FROM products_fts WHERE rowid IN (SELECT id FROM products WHERE pack_id = ?);
+
+-- Search: AND of prefix-quoted terms built in Kotlin (so raw user input can't
+-- inject FTS5 query syntax). Joins back to products for the full macro row.
+searchProductsFts:
+SELECT p.id AS id, p.name AS name, p.brand AS brand,
+       p.kcal_per_100g AS kcal_per_100g, p.protein_g_per_100g AS protein_g_per_100g,
+       p.carbs_g_per_100g AS carbs_g_per_100g, p.fat_g_per_100g AS fat_g_per_100g
+FROM products_fts f
+JOIN products p ON p.id = f.rowid
+WHERE products_fts MATCH :query
+ORDER BY rank
+LIMIT :limit;

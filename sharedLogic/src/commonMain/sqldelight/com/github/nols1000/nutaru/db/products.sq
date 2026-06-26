@@ -1,0 +1,42 @@
+CREATE TABLE products (
+    id INTEGER PRIMARY KEY,
+    barcode TEXT,
+    name TEXT NOT NULL,
+    brand TEXT,
+    kcal_per_100g REAL NOT NULL,
+    protein_g_per_100g REAL NOT NULL,
+    carbs_g_per_100g REAL NOT NULL,
+    fat_g_per_100g REAL NOT NULL,
+    source_id INTEGER,
+    pack_id TEXT
+);
+
+selectAllProducts:
+SELECT * FROM products ORDER BY name ASC;
+
+selectProductById:
+SELECT * FROM products WHERE id = ?;
+
+-- Idempotent seed: fixed ids + INSERT OR IGNORE makes this safe to run on every launch.
+insertSeedProduct:
+INSERT OR IGNORE INTO products (id, barcode, name, brand, kcal_per_100g, protein_g_per_100g, carbs_g_per_100g, fat_g_per_100g, source_id, pack_id)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Pack import: INSERT OR REPLACE so re-importing a pack version overwrites the
+-- same product ids instead of skipping (update path).
+insertPackProduct:
+INSERT OR REPLACE INTO products (id, barcode, name, brand, kcal_per_100g, protein_g_per_100g, carbs_g_per_100g, fat_g_per_100g, source_id, pack_id)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Uninstall: drop every product that came from [packId]. Leaves seed (pack_id
+-- NULL) and other packs' rows intact.
+deleteProductsByPack:
+DELETE FROM products WHERE pack_id = ?;
+
+countProductsByPack:
+SELECT COUNT(*) FROM products WHERE pack_id = ?;
+
+-- Distinct source ids used by a pack's products, for the uninstall path's
+-- source-row reclamation check.
+sourcesForPack:
+SELECT DISTINCT source_id FROM products WHERE pack_id = ? AND source_id IS NOT NULL;
