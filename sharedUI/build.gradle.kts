@@ -31,9 +31,11 @@ kotlin {
         }
         commonMain.dependencies {
             api(projects.sharedLogic)
+            implementation(libs.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
@@ -42,6 +44,9 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.compose.ui.test)
+            implementation(libs.junit)
+            implementation(libs.robolectric)
         }
     }
 }

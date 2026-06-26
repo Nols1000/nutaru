@@ -1,8 +1,9 @@
 ---
 title: "Diary day view"
 type: issue
-status: ready-for-agent
+status: done
 created: 2026-06-24
+completed: 2026-06-26
 parent: prd-nutaru-v1
 ---
 
@@ -16,16 +17,16 @@ Diary tab fully functional. Top app bar shows current date; tapping opens a date
 
 ## Acceptance criteria
 
-- [ ] Top app bar shows current date; tap opens date picker for arbitrary jump
-- [ ] Swipe left/right navigates days with smooth animation, no debounce issues
-- [ ] Entries grouped under meal-type headers in canonical order
-- [ ] Per-meal subtotals shown under each header
-- [ ] Day-total card shows kcal + P/C/F vs target, progress indicator reflects remaining
-- [ ] Long-press or swipe on entry reveals edit/delete actions
-- [ ] Edit entry routes to edit form pre-filled with current values
-- [ ] Delete entry removes from list (hard delete, with confirm dialog)
-- [ ] `commonTest`: day grouping returns correct rows per meal per day
-- [ ] `commonTest`: per-meal and day-total rollup math correct
+- [x] Top app bar shows current date; tap opens date picker for arbitrary jump
+- [x] Swipe left/right navigates days with smooth animation, no debounce issues
+- [x] Entries grouped under meal-type headers in canonical order
+- [x] Per-meal subtotals shown under each header
+- [x] Day-total card shows kcal + P/C/F vs target, progress indicator reflects remaining
+- [x] Long-press or swipe on entry reveals edit/delete actions
+- [x] Edit entry routes to edit form pre-filled with current values
+- [x] Delete entry removes from list (hard delete, with confirm dialog)
+- [x] `commonTest`: day grouping returns correct rows per meal per day
+- [x] `commonTest`: per-meal and day-total rollup math correct
 
 ## Blocked by
 
