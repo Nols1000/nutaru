@@ -1,0 +1,19 @@
+CREATE TABLE weight_entries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    weight_kg REAL NOT NULL,
+    timestamp INTEGER NOT NULL
+);
+
+insertWeightEntry:
+INSERT INTO weight_entries (weight_kg, timestamp) VALUES (?, ?);
+
+-- Latest body weight by timestamp. Onboarding writes the first row; the
+-- Mifflin-St Jeor calc reads this as the weight input.
+selectLatestWeight:
+SELECT * FROM weight_entries ORDER BY timestamp DESC LIMIT 1;
+
+selectAllWeightEntries:
+SELECT * FROM weight_entries ORDER BY timestamp DESC;
+
+deleteAllWeightEntries:
+DELETE FROM weight_entries;

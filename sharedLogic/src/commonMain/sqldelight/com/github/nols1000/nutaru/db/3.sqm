@@ -1,0 +1,25 @@
+-- Migration v3 -> v4: onboarding profile + plan tables.
+-- targets: time-versioned daily kcal/macro targets. `effective_from` is the
+--   epoch-millis day start from which a row applies; the app reads the newest
+--   row whose effective_from is <= the query date. `source` distinguishes
+--   user-set overrides ("manual") from algorithm-derived ("algorithm").
+-- weight_entries: body weight log, kg (SI internal). Onboarding's "current
+--   weight" is the first row; Mifflin-St Jeor reads the latest row as the
+--   weight input. Keeping weight here (not in `profile`) matches the PRD schema
+--   and lets weight trend over time without touching the singleton profile.
+CREATE TABLE targets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    kcal REAL NOT NULL,
+    protein_g REAL NOT NULL,
+    carbs_g REAL NOT NULL,
+    fat_g REAL NOT NULL,
+    effective_from INTEGER NOT NULL,
+    source TEXT NOT NULL,
+    created_at INTEGER NOT NULL
+);
+
+CREATE TABLE weight_entries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    weight_kg REAL NOT NULL,
+    timestamp INTEGER NOT NULL
+);

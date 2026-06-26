@@ -1,0 +1,28 @@
+CREATE TABLE targets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    kcal REAL NOT NULL,
+    protein_g REAL NOT NULL,
+    carbs_g REAL NOT NULL,
+    fat_g REAL NOT NULL,
+    effective_from INTEGER NOT NULL,
+    source TEXT NOT NULL,
+    created_at INTEGER NOT NULL
+);
+
+insertTarget:
+INSERT INTO targets (kcal, protein_g, carbs_g, fat_g, effective_from, source, created_at)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+-- Newest target effective on or before the query date. ORDER BY effective_from
+-- DESC, id DESC breaks ties (two rows same day) in favour of the latest insert.
+selectTargetEffectiveOnOrBefore:
+SELECT * FROM targets
+WHERE effective_from <= :dateMillis
+ORDER BY effective_from DESC, id DESC
+LIMIT 1;
+
+selectAllTargets:
+SELECT * FROM targets ORDER BY effective_from DESC;
+
+deleteAllTargets:
+DELETE FROM targets;
