@@ -80,7 +80,7 @@ jobs:
           # OFF publishes a sha256sum file for its .gz exports. Best-effort:
           # warn if our file isn't listed, fail hard on a checksum mismatch.
           curl -fsSL -o gz-sha256sum "https://static.openfoodfacts.org/data/gz-sha256sum"
-          expected="$(grep " ${remote_name}\$" gz-sha256sum | awk '{print $1}')"
+          expected="$(grep " ${remote_name}\$" gz-sha256sum | awk '{print $1}' || true)"
           actual="$(sha256sum "$dump_file" | awk '{print $1}')"
           if [ -z "$expected" ]; then
             echo "::warning::no sha256 entry for ${remote_name} in gz-sha256sum; skipping integrity check"
