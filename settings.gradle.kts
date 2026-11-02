@@ -1,4 +1,4 @@
-rootProject.name = "Nutaru"
+rootProject.name = "nutaru"
 
 pluginManagement {
     repositories {

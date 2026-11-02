@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		D497715CE64F2A230847712D /* Nutaru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nutaru.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D497715CE64F2A230847712D /* nutaru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nutaru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,7 +59,7 @@
 		90FB49CCF2B1932FBB15C7A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D497715CE64F2A230847712D /* Nutaru.app */,
+				D497715CE64F2A230847712D /* nutaru.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			packageProductDependencies = (
 			);
 			productName = iosApp;
-			productReference = D497715CE64F2A230847712D /* Nutaru.app */;
+			productReference = D497715CE64F2A230847712D /* nutaru.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
